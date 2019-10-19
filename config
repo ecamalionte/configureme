@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+install_tmux {
+  apt install tmux -y
+}
+
+install_zshell { 
+  echo "Install Zsh"
+  apt install zsh -y
+  sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+}
+
+install_sintax_highlighting {
+  echo "Install Zsh Sintax Highlighting" 
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+} 
+
+install_completion { 
+  echo "Install Zsh Completion" 
+  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+}
+
+install_auto_suggestion { 
+  echo "Install Zsh Auto Suggestion"
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+} 
+
+
+install_asdf {
+  echo "install ASDF Version Manager"  
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf 
+}
+
+apply_config {
+  echo "Apply ZSH configurations"
+  cp ./_zshrc ~/.zshrc
+  source ~/.zshrc
+}
+
+add_asdf_plugins_for_elixir_and_erlang { 
+  echo "Install ASDF Elixir/Erlang OTP plugin"
+  asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+  asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+} 
+
+main {
+  atp update
+  install_tmux
+  install_zshell
+  install_sintax_highlighting
+  install_completion
+  install_auto_suggestion
+  install_asdf
+  apply_configuration
+  add_asdf_plugins_for_elixir_and_erlang
+}
+
+main
