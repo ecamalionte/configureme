@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-install_tmux() {
-  echo "Install Tmux"
-  sudo apt install tmux -y
-}
 
 install_spacemacs(){
   echo "Install Spacemacs"
@@ -39,7 +35,6 @@ install_asdf() {
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 }
 
-
 apply_configuration() {
   echo "Apply ZSH configurations"
   cp ./_zshrc ~/.zshrc
@@ -61,19 +56,30 @@ add_asdf_plugins_for_ruby() {
   asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
 }
 
-install_tmuxinator() {
-  sudo apt install libreadline-dev
+install_tmux() {
+  echo "Install Tmux"
+  sudo apt install tmux -y
+}
+
+install_ruby() {
   asdf install ruby 2.6.5
   asdf global ruby 2.6.5
+}
+
+install_tmuxinator() {
+  sudo apt install libreadline-dev
   gem install tmuxinator
 }
 
 configure_git() {
   git config --global user.email "ecamalionte@gmail.com"
   git config --global user.name "Eric Camalionte"
-  # Generate ssh private and public key
-  # ssh-keygen -t rsa -b 4096 -C "ecamalionte@gmail.com"
-  # cat ~/.ssh/id_rsa.pub
+  # generate_ssh_private_and_public_key
+}
+
+generate_ssh_private_and_public_key() {
+  ssh-keygen -t rsa -b 4096 -C "ecamalionte@gmail.com"
+  cat ~/.ssh/id_rsa.pub
 }
 
 install_docker() {
@@ -87,23 +93,33 @@ install_docker_compose() {
   docker-compose --version
 }
 
-main() {
- # sudo apt update
- # configure_git
- # install_tmux
- # install_spacemacs
- # install_zshell
- # install_sintax_highlighting
- # install_completion
- # install_auto_suggestion
- # install_asdf
- # apply_configuration
- # add_asdf_plugins_for_elixir_and_erlang
- # add_asdf_plugins_for_ruby
- # install_docker
- # install_docker_compose
+install_pgcli() {
+  sudo apt install python-dev
+  sudo apt install libpq-dev
+  export PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+  pip install psycopg2
+  pip install pgcli
+  pgcli -v
+}
 
+main() {
+  sudo apt update
+  configure_git
+  install_spacemacs
+  install_zshell
+  install_sintax_highlighting
+  install_completion
+  install_auto_suggestion
+  install_asdf
+  apply_configuration
+  add_asdf_plugins_for_elixir_and_erlang
+  add_asdf_plugins_for_ruby
+  install_tmux
+  install_ruby
   install_tmuxinator
+  install_docker
+  install_docker_compose
+  install_pgcli
 }
 
 main
