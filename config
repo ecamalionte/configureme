@@ -2,13 +2,20 @@
 
 install_tmux() {
   echo "Install Tmux"
-  apt install tmux -y
-  echo "done"
+  sudo apt install tmux -y
+}
+
+install_spacemacs(){
+  echo "Install Spacemacs"
+  git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+  echo "Configure custom spacemacs"
+  git clone git@github.com:ecamalionte/dotspacemacs.git ~/
+  ln -s ~/dotspacemacs/.spacemacs ~/.spacemacs
 }
 
 install_zshell() {
   echo "Install Zsh"
-  apt install zsh -y
+  sudo apt install zsh -y
   #sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 }
 
@@ -28,9 +35,10 @@ install_auto_suggestion() {
 }
 
 install_asdf() {
-  echo "install ASDF Version Manager"
+  echo "Install ASDF Version Manager"
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 }
+
 
 apply_configuration() {
   echo "Apply ZSH configurations"
@@ -41,21 +49,61 @@ add_asdf_plugins_for_elixir_and_erlang() {
   echo "Install ASDF Elixir/Erlang OTP plugin"
   asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
   asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
-  apt install automake -y
-  apt install autoconf -y
-  apt install libncurses5-dev -y
+
+  echo "Install Erlang Compile dependencies"
+  sudo apt install automake -y
+  sudo apt install autoconf -y
+  sudo apt install libncurses5-dev -y
+}
+
+add_asdf_plugins_for_ruby() {
+  echo "Install ASDF Ruby plugins"
+  asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
+}
+
+install_tmuxinator() {
+  sudo apt install libreadline-dev
+  asdf install ruby 2.6.5
+  asdf global ruby 2.6.5
+  gem install tmuxinator
+}
+
+configure_git() {
+  git config --global user.email "ecamalionte@gmail.com"
+  git config --global user.name "Eric Camalionte"
+  # Generate ssh private and public key
+  # ssh-keygen -t rsa -b 4096 -C "ecamalionte@gmail.com"
+  # cat ~/.ssh/id_rsa.pub
+}
+
+install_docker() {
+  sudo curl -sSL https://get.docker.com | sh
+  sudo usermod -aG docker pi
+  doker ps
+}
+
+install_docker_compose() {
+  sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  docker-compose --version
 }
 
 main() {
-  atp update
-  install_tmux
-  install_zshell
-  install_sintax_highlighting
-  install_completion
-  install_auto_suggestion
-  install_asdf
-  apply_configuration
-  add_asdf_plugins_for_elixir_and_erlang
+ # sudo apt update
+ # configure_git
+ # install_tmux
+ # install_spacemacs
+ # install_zshell
+ # install_sintax_highlighting
+ # install_completion
+ # install_auto_suggestion
+ # install_asdf
+ # apply_configuration
+ # add_asdf_plugins_for_elixir_and_erlang
+ # add_asdf_plugins_for_ruby
+ # install_docker
+ # install_docker_compose
+
+  install_tmuxinator
 }
 
 main
